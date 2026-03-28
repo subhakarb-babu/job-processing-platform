@@ -54,3 +54,23 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Database
+*.sqlite
+*.db
+
+# Redis dump (if local)
+dump.rdb
+
+# OS (Windows)
+Thumbs.db
+
+# Docker (future safe)
+docker-compose.override.yml
+
+# Build artifacts
+*.tsbuildinfo
+
+# Optional: lock files (keep if team project)
+# package-lock.json
+
