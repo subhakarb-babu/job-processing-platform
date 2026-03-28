@@ -1,16 +1,35 @@
-export default () => ({
-  port: parseInt(process.env.PORT || '3000', 10),
+export default () => {
+  const getEnv = (key: string, required = true): string => {
+    const value = process.env[key];
+    if (required && !value) {
+      throw new Error(`Missing environment variable: ${key}`);
+    }
+    return value as string;
+  };
 
-  database: {
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT || '5432', 10),
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    name: process.env.DB_NAME,
-  },
+  const toNumber = (value: string | undefined, fallback: number): number => {
+    if (!value) return fallback;
+    const parsed = Number(value);
+    if (Number.isNaN(parsed)) {
+      throw new Error(`Invalid number: ${value}`);
+    }
+    return parsed;
+  };
 
-  redis: {
-    host: process.env.REDIS_HOST,
-    port: parseInt(process.env.REDIS_PORT || '6379', 10),
-  },
-});
+  return {
+    port: toNumber(process.env.PORT, 3000),
+
+    database: {
+      host: getEnv('DB_HOST'),
+      port: toNumber(process.env.DB_PORT, 5432),
+      user: getEnv('DB_USER'),
+      password: getEnv('DB_PASSWORD'),
+      name: getEnv('DB_NAME'),
+    },
+
+    redis: {
+      host: getEnv('REDIS_HOST'),
+      port: toNumber(process.env.REDIS_PORT, 6379),
+    },
+  };
+};
